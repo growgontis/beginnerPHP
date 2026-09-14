@@ -7,6 +7,8 @@ $inventaris = [
 
 $keranjang = [];
 
+$shift = $argv[1] ?? "Tidak diketahui"; // mengambil argument CLI
+
 function tambahKeranjang(&$keranjang, &$inventaris, $kode, $qty){
     $inventaris[$kode]["stok"] -= $qty; //kurangi stok sesuai jumlah yang dipilih
 
