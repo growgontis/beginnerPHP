@@ -60,7 +60,7 @@ function tambahKontak(&$kontak):void {
     $kontak [$nama] = [
         "nomor" => $nomor,
         "kategori" => $kategori
-    ];
+    ]; // masukkan input ke dalam array
 }
 
 function cariKontak():void {
