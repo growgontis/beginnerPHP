@@ -1,4 +1,5 @@
 <?php
+//Sistem hand written code
 
 $kontak = [];
 
