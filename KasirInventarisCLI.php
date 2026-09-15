@@ -7,6 +7,8 @@ $inventaris = [
 
 $keranjang = [];
 
+//argv[0] adalah "KasirIventarisCLI.php"
+//argv[1] baru "input_bebas"
 $shift = $argv[1] ?? "Tidak diketahui"; // mengambil argument CLI
 
 function tambahKeranjang(&$keranjang, &$inventaris, $kode, $qty){
@@ -48,6 +50,7 @@ $nomor = 1;
 
 echo "\n====================================\n";
 echo "STRUK BELANJA ANDA\n";
+echo "Shift: $shift\n";
 echo "====================================\n";
 
 foreach($keranjang as $item){
