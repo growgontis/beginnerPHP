@@ -1,9 +1,9 @@
 # beginnerPHP
 # PHP v 8.1+
 
-# 📚 Latihan PHP — Rekapitulasi Nilai Mahasiswa
+# 📚 Latihan PHP — Implementasi Operator Dasar & Logika Bitwise
 
-Program CLI sederhana untuk memasukkan data mahasiswa, melakukan validasi nilai, menghitung nilai akhir, menentukan grade, menampilkan rekapitulasi, dan menyimpan hasil ke file.
+Program CLI sederhana yang disimulasikan untuk melakukan perhitungan transaksi belanja menggunakan operator aritmatika/logika dasar, serta penerapan sistem manajemen hak akses (*Role-Based Access Control*) menggunakan operator *bitwise*.
 
 ---
 
@@ -11,15 +11,14 @@ Program CLI sederhana untuk memasukkan data mahasiswa, melakukan validasi nilai,
 
 Latihan ini bertujuan untuk melatih:
 
-* Penggunaan variable dan tipe data.
-* Input data melalui CLI menggunakan `readline()`.
-* Validasi input.
-* Penggunaan percabangan dan perulangan.
-* Penggunaan array untuk menyimpan data.
-* Pembuatan dan penggunaan function.
-* Pengolahan data dan perhitungan nilai.
-* Formatting output.
-* Penyimpanan hasil ke file.
+* Penggunaan konstanta dan operator aritmatika dasar.
+* Penggunaan *ternary operator* berlapis untuk pengambilan keputusan yang lebih ringkas.
+* Pemahaman *null coalescing assignment* (`??=`) dan *elvis operator* (`?:`).
+* Perbedaan operator perbandingan *loose* (`==`) dan *strict* (`===`).
+* Penggunaan *spaceship operator* (`<=>`) untuk perbandingan nilai dua arah.
+* Manipulasi status atau hak akses tingkat rendah menggunakan operator *bitwise* (`|`, `&`, `^`, `~`, `<<`, `>>`).
+* Penggunaan operator logika boolean (`&&`, `!`, `xor`).
+* Perbedaan *pre-increment* dan *post-increment* pada suatu iterasi atau *counter*.
 
 ---
 
@@ -27,23 +26,21 @@ Latihan ini bertujuan untuk melatih:
 
 | Materi               | Contoh                                      |
 | -------------------- | ------------------------------------------- |
-| Variable             | `$nama`, `$tugas`, `$uts`, `$uas`           |
-| Input CLI            | `readline()`                                |
-| String               | `trim()`, `strtolower()`                    |
-| Validasi             | `is_numeric()`                              |
-| Percabangan          | `if`, `elseif`, `else`                      |
-| Perulangan           | `while`, `do...while`                       |
-| Kontrol loop         | `break`, `continue`                         |
-| Array                | Associative & nested array                  |
-| Iterasi array        | `foreach`                                   |
-| Function             | `hitungNilaiAkhir()`                        |
-| Parameter & return   | `($tugas, $uts, $uas)`, `return`            |
-| Return type          | `:float`, `:string`                         |
-| Built-in function    | `empty()`, `count()`, `array_sum()`         |
-| Formatting           | `sprintf()`                                 |
-| String concatenation | `.=`                                        |
-| File handling        | `file_put_contents()`                       |
-| Operator             | `+`, `*`, `/`, `<`, `>`, `>=`, `&&`, `\|\|` |
+| Konstanta & Variable | `const PPN = 0.11;`, `$harga_satuan`        |
+| Aritmatika           | `*`, `/`, `%`, `+`, `-`                     |
+| Ternary Operator     | `($subtotal >= 500000) ? 15 : 0`            |
+| Null Coalescing      | `??=`, `?:`                                 |
+| Perbandingan Strict  | `==`, `===`, `!==`                          |
+| Spaceship Operator   | `<=>`                                       |
+| Assignment           | `+=`, `|=`, `&=`, `^=`                      |
+| Bitwise OR (Beri)    | `$hak_budi \| HAK_TULIS`                    |
+| Bitwise AND (Cek)    | `$hak_budi & HAK_HAPUS`                     |
+| Bitwise NOT (Cabut)  | `& ~HAK_TULIS`                              |
+| Bitwise XOR (Toggle) | `^= HAK_TULIS`                              |
+| Bitwise Shift        | `<< 1`, `>> 1`                              |
+| Logika Boolean       | `&&`, `!`, `xor`                            |
+| Increment            | `$percobaan++`, `++$percobaan`             |
+| Built-in function    | `number_format()`, `decbin()`, `str_pad()`  |
 
 ---
 
@@ -52,129 +49,104 @@ Latihan ini bertujuan untuk melatih:
 ```text
 Mulai
   ↓
-Input nama mahasiswa
+[BAGIAN A - Transaksi Belanja]
   ↓
-Nama = "selesai"/"stop"?
-  ├── Ya → Selesai
-  │
-  └── Tidak
-        ↓
-    Input nilai Tugas, UTS, UAS
-        ↓
-    Validasi input
-        ↓
-    Nilai valid?
-      ├── Tidak → Input ulang
-      │
-      └── Ya
-            ↓
-        Simpan data mahasiswa
-            ↓
-        Kembali input mahasiswa
-            ↓
-        Selesai input
-            ↓
-        Hitung nilai akhir
-            ↓
-        Tentukan grade
-            ↓
-        Hitung rata-rata
-            ↓
-        Buat rekapitulasi
-            ↓
-        Simpan ke file
-            ↓
-          Selesai
+Hitung Subtotal
+  ↓
+Tentukan Diskon (Ternary Berjenjang)
+  ↓
+Hitung Ongkos Kirim & Modulo (Sisa Bagi)
+  ↓
+Validasi Kupon & Catatan (Null Coalescing / Elvis)
+  ↓
+Uji Perbandingan (==, ===, !==, <=>)
+  ↓
+Kalkulasi Total Akhir (Assignment +=)
+  ↓
+[BAGIAN B - Hak Akses Bitwise]
+  ↓
+Definisi Hak Akses (Konstanta Biner: 1, 2, 4, 8)
+  ↓
+Pemberian Hak Awal (Bitwise OR | )
+  ↓
+Pemeriksaan Hak (Bitwise AND & )
+  ↓
+Modifikasi Hak (Tambah, Cabut, Toggle)
+  ↓
+Uji Geser Bit (Shift Left / Right)
+  ↓
+Simulasi Keputusan Akses Gabungan (Logika &&, !)
+  ↓
+Uji Increment (Pre/Post)
+  ↓
+  Selesai
 ```
 
 ---
 
 ## 🧠 Konsep Pemrograman yang Dilatih
 
-Latihan ini melatih alur dasar dalam membangun sebuah program:
+Latihan ini melatih implementasi operator pada dua simulasi kasus di dunia nyata:
 
-### 1. Input
-
-Menerima data dari pengguna melalui terminal.
-
+### 1. Arithmetic & Ternary Operator
+Menghitung subtotal dan persentase diskon secara efisien dalam satu baris, menggantikan struktur `if-else` yang panjang.
 ```php
-$nama = readline("Nama: ");
+$diskon = ($subtotal >= 500000) ? 15 : (($subtotal >= 300000) ? 10 : (($subtotal >= 100000) ? 5 : 0));
 ```
 
-### 2. Validation
-
-Memastikan data yang diberikan sesuai dengan aturan.
-
+### 2. Elvis & Null Coalescing Assignment
+Memberikan nilai *default* apabila variabel bernilai `null` atau *falsy*, sangat berguna untuk memproses input *form* yang opsional.
 ```php
-is_numeric($tugas)
+$kupon ??= "TANPA-KUPON";
+$catatan = $catatan_kirim ?: "(tidak ada catatan)";
 ```
 
-dan memastikan nilai berada pada rentang `0–100`.
-
-### 3. Storage
-
-Menyimpan data mahasiswa ke dalam associative/nested array.
-
+### 3. Strict Comparison & Spaceship
+Memastikan tipe data sama persis saat membandingkan (`===`), serta mendapatkan status perbandingan sekaligus (lebih kecil: `-1`, sama dengan: `0`, lebih besar: `1`).
 ```php
-$data_mahasiswa[$nama] = [
-    "tugas" => $tugas,
-    "uts" => $uts,
-    "uas" => $uas
-];
+$validasi2 = ($input_form === $nilai_db) ? "true" : "false";
+echo $harga_toko_a <=> $harga_toko_b;
 ```
 
-### 4. Processing
-
-Mengolah data untuk mendapatkan nilai akhir.
-
-```text
-Tugas × 30%
-UTS   × 30%
-UAS   × 40%
+### 4. Bitwise OR & AND (Beri dan Cek Hak)
+Menggunakan struktur bilangan biner (`0001`, `0010`, dll) untuk melakukan manajemen hak akses yang jauh lebih cepat dan hemat memori dibandingkan *array* nilai boolean.
+```php
+$hak_budi = HAK_BACA | HAK_TULIS; // 0011 (Memberi hak baca dan tulis)
+$boleh_hapus = ($hak_budi & HAK_HAPUS); // Mengecek apakah bit hapus (0100) menyala
 ```
 
-### 5. Decision
-
-Menentukan grade berdasarkan nilai akhir.
-
-```text
->= 85 → A
->= 70 → B
->= 60 → C
->= 50 → D
-<  50 → E
+### 5. Bitwise Cabut dan Toggle Hak
+Mencabut hak spesifik dengan cara membalikkan bit target menggunakan NOT (`~`) lalu di-AND-kan, serta men-*toggle* (nyala-mati) hak menggunakan XOR (`^`).
+```php
+$hak_budi &= ~HAK_TULIS; // Mencabut hak tulis tanpa mengubah hak lainnya
+$hak_ani ^= HAK_TULIS;   // Men-toggle (jika ada jadi tidak ada, jika tidak ada jadi ada)
 ```
 
-### 6. Output
-
-Menampilkan hasil dalam bentuk tabel yang terformat.
-
-### 7. Persistence
-
-Menyimpan hasil rekapitulasi ke file `rekap_nilai.txt`.
+### 6. Logika Akses & Increment
+Penggabungan status *boolean* untuk gerbang akses akhir, serta observasi berjalannya *post-increment* dan *pre-increment*.
+```php
+$boleh_masuk = $login && $akun_aktif && !$maintenance;
+$percobaan++; // post-increment, nilai lama dieksekusi dulu baru ditambah
+```
 
 ---
 
 ## 📈 Tingkat Materi
 
-**Level: Beginner → Intermediate Awal**
+**Level: Intermediate Awal**
 
 ```text
-PHP Fundamental
+Fundamental Data Types
       ↓
-Variable & Data Type
+Arithmetic & Logic Operators
       ↓
-Input & Validation
+Ternary & Coalescing
       ↓
-Control Flow
+Strict Comparison & Spaceship
       ↓
-Array
+Bitwise Operations (OR, AND, XOR)
       ↓
-Function
-      ↓
-Data Processing
-      ↓
-File Handling
+Binary Manipulation & Shift
 ```
 
-Latihan ini sudah mencakup **fundamental PHP secara cukup lengkap** dan mulai memperkenalkan konsep pengolahan data dalam program yang lebih nyata.
+Latihan ini mendalami **berbagai jenis operator PHP secara komprehensif** yang sering kali digunakan oleh *developer* profesional untuk mempersingkat kode (*shorthand syntactic sugar*), efisiensi kalkulasi logika, dan optimasi pada level *bit* atau memori sistem.
