@@ -1,49 +1,38 @@
 # beginnerPHP
 # PHP v 8.1+
 
-# 📚 Latihan PHP — Rekapitulasi Nilai Mahasiswa
+# 📚 Latihan PHP — Manipulasi Array, Matriks, & Kontrol Perulangan Lanjut
 
-Program CLI sederhana untuk memasukkan data mahasiswa, melakukan validasi nilai, menghitung nilai akhir, menentukan grade, menampilkan rekapitulasi, dan menyimpan hasil ke file.
+Program CLI yang mensimulasikan sistem pencatatan transaksi restoran, antrian dapur, rekapitulasi matriks penjualan menggunakan *nested loop*, hingga pencarian stok dan pembuatan pola (piramida) menggunakan kontrol perulangan tingkat lanjut.
 
 ---
 
 ## 🎯 Tujuan Latihan
 
 Latihan ini bertujuan untuk melatih:
-
-* Penggunaan variable dan tipe data.
-* Input data melalui CLI menggunakan `readline()`.
-* Validasi input.
-* Penggunaan percabangan dan perulangan.
-* Penggunaan array untuk menyimpan data.
-* Pembuatan dan penggunaan function.
-* Pengolahan data dan perhitungan nilai.
-* Formatting output.
-* Penyimpanan hasil ke file.
+* Pemrosesan data *array* multidimensi (*array of objects/associative arrays*).
+* Pencarian nilai ekstrem (tertinggi/terendah) secara manual tanpa fungsi bawaan.
+* Penggunaan dan perbedaan berbagai jenis perulangan (`foreach`, `while`, `for`).
+* Pemahaman mendalam tentang *nested loop* (perulangan bersarang) untuk memproses matriks (baris & kolom) serta mencetak pola dua dimensi.
+* Penggunaan *loop control* tingkat lanjut seperti `break 2` dan `continue`.
+* *Formatting* cetakan tabel yang lebih kompleks dan dinamis di CLI menggunakan `printf`.
 
 ---
 
 ## 🧩 Materi yang Dicakup
 
-| Materi               | Contoh                                      |
-| -------------------- | ------------------------------------------- |
-| Variable             | `$nama`, `$tugas`, `$uts`, `$uas`           |
-| Input CLI            | `readline()`                                |
-| String               | `trim()`, `strtolower()`                    |
-| Validasi             | `is_numeric()`                              |
-| Percabangan          | `if`, `elseif`, `else`                      |
-| Perulangan           | `while`, `do...while`                       |
-| Kontrol loop         | `break`, `continue`                         |
-| Array                | Associative & nested array                  |
-| Iterasi array        | `foreach`                                   |
-| Function             | `hitungNilaiAkhir()`                        |
-| Parameter & return   | `($tugas, $uts, $uas)`, `return`            |
-| Return type          | `:float`, `:string`                         |
-| Built-in function    | `empty()`, `count()`, `array_sum()`         |
-| Formatting           | `sprintf()`                                 |
-| String concatenation | `.=`                                        |
-| File handling        | `file_put_contents()`                       |
-| Operator             | `+`, `*`, `/`, `<`, `>`, `>=`, `&&`, `\|\|` |
+| Materi | Contoh |
+| --- | --- |
+| Array Associative & Indexed | `$transaksi = [...]`, `$hari = [...]` |
+| Foreach Loop | `foreach($transaksi as $t)` |
+| While Loop | `while ($antrian !== 0)` |
+| For Loop | `for ($i = 0; $i < count($produk); $i++)` |
+| Nested Loop (Bersarang) | `for` di dalam `for` (Matriks Terjual & Piramida) |
+| Pencarian Ekstrem | `if(empty($tertinggi) \|\| $subtotal > $tertinggi["subtotal"])` |
+| Loop Control: Break Level | `break 2;` (keluar dari dua loop sekaligus) |
+| Loop Control: Continue | `continue;` (melompati iterasi saat ini) |
+| Aritmatika Modulo (Ganjil/Genap) | `$j % 2 !== 0` |
+| Formatting Tabel Dinamis | `printf("%-14s", $produk[$i])` |
 
 ---
 
@@ -52,129 +41,69 @@ Latihan ini bertujuan untuk melatih:
 ```text
 Mulai
   ↓
-Input nama mahasiswa
+[Bagian 1: Daftar Transaksi]
+Iterasi $transaksi (foreach) → Hitung omzet, hitung selesai/batal, cetak tabel
   ↓
-Nama = "selesai"/"stop"?
-  ├── Ya → Selesai
-  │
-  └── Tidak
-        ↓
-    Input nilai Tugas, UTS, UAS
-        ↓
-    Validasi input
-        ↓
-    Nilai valid?
-      ├── Tidak → Input ulang
-      │
-      └── Ya
-            ↓
-        Simpan data mahasiswa
-            ↓
-        Kembali input mahasiswa
-            ↓
-        Selesai input
-            ↓
-        Hitung nilai akhir
-            ↓
-        Tentukan grade
-            ↓
-        Hitung rata-rata
-            ↓
-        Buat rekapitulasi
-            ↓
-        Simpan ke file
-            ↓
-          Selesai
+[Bagian 2: Nilai Ekstrem]
+Iterasi $transaksi → Simpan & perbarui subtotal tertinggi dan terendah
+  ↓
+[Bagian 3: Antrian Dapur]
+Proses $antrian_dapur (while) → Kurangi jumlah antrian sampai 0
+  ↓
+[Bagian 4: Matriks Terjual]
+Looping Baris (Produk) & Kolom (Hari) → Hitung subtotal per produk & grand total per hari
+  ↓
+[Bagian 5: Cari Stok Habis]
+Nested loop pada $rak → Jika menemukan stok == 0, langsung hentikan seluruh loop (break 2)
+  ↓
+[Bagian 6: Cetak Piramida]
+Nested loop baris dan kolom → Cetak bintang, atau lewati dengan 'continue' untuk piramida berongga
+  ↓
+Selesai
 ```
 
 ---
 
 ## 🧠 Konsep Pemrograman yang Dilatih
 
-Latihan ini melatih alur dasar dalam membangun sebuah program:
+Latihan ini sangat padat dengan teknik fundamental pengolahan data array dan iterasi:
 
-### 1. Input
+### 1. Iterasi Data Kompleks & Accumulator
+Menggunakan `foreach` untuk membongkar *array of associative arrays*. Selama iterasi, program juga menumpuk nilai (akumulasi) seperti menghitung total `$omzet` dan menghitung *counter* jumlah pesanan `$selesai`.
 
-Menerima data dari pengguna melalui terminal.
+### 2. Pencarian Nilai Ekstrem (Maks/Min) Manual
+Algoritma dasar pencarian dengan menyimpan nilai sementara. Jika iterasi menemukan nilai yang lebih besar dari penyimpan `$tertinggi`, nilai penyimpan akan ditimpa. Ini sangat melatih logika perbandingan data tanpa mengandalkan fungsi bawaan PHP seperti `max()`.
 
-```php
-$nama = readline("Nama: ");
-```
+### 3. Matriks / 2D Array Processing (Nested Loop)
+Memproses struktur data baris dan kolom (seperti data Excel).
+* Loop luar (Outer loop) menangani baris produk.
+* Loop dalam (Inner loop) menangani penjualan harian di tiap produk.
+* Program melatih cara menampung dua jenis total sekaligus: Total per baris (`$subtotal2`) dan akumulasi total per kolom (`$total_hari`).
 
-### 2. Validation
+### 4. Multi-level Break (`break 2`)
+Ketika mencari data dalam loop bersarang (nested loop), menggunakan `break` biasa hanya akan menghentikan loop terdalam. Dengan `break 2`, program dapat menghentikan loop dalam beserta loop luarnya sekaligus ketika sebuah kondisi (stok = 0) terpenuhi, sehingga sangat menghemat *resource* komputasi.
 
-Memastikan data yang diberikan sesuai dengan aturan.
-
-```php
-is_numeric($tugas)
-```
-
-dan memastikan nilai berada pada rentang `0–100`.
-
-### 3. Storage
-
-Menyimpan data mahasiswa ke dalam associative/nested array.
-
-```php
-$data_mahasiswa[$nama] = [
-    "tugas" => $tugas,
-    "uts" => $uts,
-    "uas" => $uas
-];
-```
-
-### 4. Processing
-
-Mengolah data untuk mendapatkan nilai akhir.
-
-```text
-Tugas × 30%
-UTS   × 30%
-UAS   × 40%
-```
-
-### 5. Decision
-
-Menentukan grade berdasarkan nilai akhir.
-
-```text
->= 85 → A
->= 70 → B
->= 60 → C
->= 50 → D
-<  50 → E
-```
-
-### 6. Output
-
-Menampilkan hasil dalam bentuk tabel yang terformat.
-
-### 7. Persistence
-
-Menyimpan hasil rekapitulasi ke file `rekap_nilai.txt`.
+### 5. Penggunaan `continue` pada Pembuatan Pola
+Membuat dua jenis piramida bintang bersarang. Pada piramida kedua, `continue` digunakan untuk mencegat jalannya iterasi jika indeks kolom bernilai ganjil (`$j % 2 !== 0`), sehingga iterasi mencetak spasi dan melompat kembali ke atas, menciptakan piramida berongga.
 
 ---
 
 ## 📈 Tingkat Materi
 
-**Level: Beginner → Intermediate Awal**
+**Level: Intermediate**
 
 ```text
-PHP Fundamental
+Array Fundamentals
       ↓
-Variable & Data Type
+Basic Loops (while, foreach)
       ↓
-Input & Validation
+State Retention (Max/Min finding)
       ↓
-Control Flow
+Multidimensional / 2D Arrays
       ↓
-Array
+Nested Loops Matrix Processing
       ↓
-Function
-      ↓
-Data Processing
-      ↓
-File Handling
+Loop Control (Break level & Continue)
 ```
 
-Latihan ini sudah mencakup **fundamental PHP secara cukup lengkap** dan mulai memperkenalkan konsep pengolahan data dalam program yang lebih nyata.
+Materi ini memberikan fondasi yang sangat kuat sebelum masuk ke manipulasi *database* relasional, karena pengolahan *result set* dari *database* umumnya akan menggunakan teknik iterasi array dan matriks seperti ini.
