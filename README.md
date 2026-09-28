@@ -1,25 +1,22 @@
 # beginnerPHP
 # PHP v 8.1+
 
-# 📚 Latihan PHP — Rekapitulasi Nilai Mahasiswa
+# 📚 Latihan PHP — Parser Log Akses Server & Pembersih Data Pelanggan
 
-Program CLI sederhana untuk memasukkan data mahasiswa, melakukan validasi nilai, menghitung nilai akhir, menentukan grade, menampilkan rekapitulasi, dan menyimpan hasil ke file.
+Program CLI untuk melakukan parsing data log server (memotong string, menyamarkan IP, menghitung error & durasi) serta melakukan pembersihan data teks pelanggan berformat CSV (cleaning nama dari gelar, standardisasi nomor telepon, dan formatting angka).
 
 ---
 
 ## 🎯 Tujuan Latihan
 
 Latihan ini bertujuan untuk melatih:
-
-* Penggunaan variable dan tipe data.
-* Input data melalui CLI menggunakan `readline()`.
-* Validasi input.
-* Penggunaan percabangan dan perulangan.
-* Penggunaan array untuk menyimpan data.
-* Pembuatan dan penggunaan function.
-* Pengolahan data dan perhitungan nilai.
-* Formatting output.
-* Penyimpanan hasil ke file.
+* Penggunaan fungsi `explode()` untuk memecah string berdasarkan delimiter.
+* Manipulasi string lanjutan menggunakan `substr()`, `strpos()`, dan `trim()`.
+* Pencarian dan penggantian string menggunakan `str_replace()`, `str_contains()`, dan `str_starts_with()`.
+* Analisis teks dan pencarian frekuensi kemunculan menggunakan `substr_count()`.
+* Pembersihan data mentah (*Data Cleaning*) dari format CSV sederhana.
+* Standardisasi format nomor telepon (awalan +62/62 menjadi 0).
+* Formatting angka dan pembuatan laporan berbasis teks terformat (`printf`).
 
 ---
 
@@ -27,23 +24,15 @@ Latihan ini bertujuan untuk melatih:
 
 | Materi               | Contoh                                      |
 | -------------------- | ------------------------------------------- |
-| Variable             | `$nama`, `$tugas`, `$uts`, `$uas`           |
-| Input CLI            | `readline()`                                |
-| String               | `trim()`, `strtolower()`                    |
-| Validasi             | `is_numeric()`                              |
-| Percabangan          | `if`, `elseif`, `else`                      |
-| Perulangan           | `while`, `do...while`                       |
-| Kontrol loop         | `break`, `continue`                         |
-| Array                | Associative & nested array                  |
-| Iterasi array        | `foreach`                                   |
-| Function             | `hitungNilaiAkhir()`                        |
-| Parameter & return   | `($tugas, $uts, $uas)`, `return`            |
-| Return type          | `:float`, `:string`                         |
-| Built-in function    | `empty()`, `count()`, `array_sum()`         |
-| Formatting           | `sprintf()`                                 |
-| String concatenation | `.=`                                        |
-| File handling        | `file_put_contents()`                       |
-| Operator             | `+`, `*`, `/`, `<`, `>`, `>=`, `&&`, `\|\|` |
+| Heredoc String       | `<<<LOG ... LOG;`                           |
+| Memecah String       | `explode("|", $b)`                          |
+| Posisi & Potong      | `strpos()`, `substr()`                      |
+| Menggabungkan String | `implode(".", $oktet)`                      |
+| Cek Karakter String  | `str_contains()`, `str_starts_with()`       |
+| Hitung Kemunculan    | `substr_count()`                            |
+| Penggantian Teks     | `str_replace()`                             |
+| Kalkulasi & Statistik| `count()`, `array_sum()`, `array_unique()`  |
+| Formatting Output    | `printf()`, `number_format()`               |
 
 ---
 
@@ -52,129 +41,101 @@ Latihan ini bertujuan untuk melatih:
 ```text
 Mulai
   ↓
-Input nama mahasiswa
+[BAGIAN A - Parser Log Akses]
   ↓
-Nama = "selesai"/"stop"?
-  ├── Ya → Selesai
-  │
-  └── Tidak
-        ↓
-    Input nilai Tugas, UTS, UAS
-        ↓
-    Validasi input
-        ↓
-    Nilai valid?
-      ├── Tidak → Input ulang
-      │
-      └── Ya
-            ↓
-        Simpan data mahasiswa
-            ↓
-        Kembali input mahasiswa
-            ↓
-        Selesai input
-            ↓
-        Hitung nilai akhir
-            ↓
-        Tentukan grade
-            ↓
-        Hitung rata-rata
-            ↓
-        Buat rekapitulasi
-            ↓
-        Simpan ke file
-            ↓
-          Selesai
+Pecah Log Mentah per Baris (explode)
+  ↓
+Iterasi Setiap Baris Log:
+  ├── Ambil & Pisahkan Waktu (Tanggal & Jam)
+  ├── Ambil IP, Samarkan Oktet Terakhir (***)
+  ├── Ambil Method & Endpoint Request
+  ├── Ambil Status HTTP & Durasi Eksekusi
+  └── Akumulasi Total Request, Error (4xx/5xx), & Cek Durasi Terlama
+  ↓
+Cetak Tabel Rekapitulasi Log & Statistik Rata-rata
+  ↓
+Uji Analisis Teks Tambahan (str_contains, substr_count, dll)
+  ↓
+[BAGIAN B - Pembersih Data Pelanggan]
+  ↓
+Pecah Data CSV Pelanggan per Baris
+  ↓
+Iterasi Setiap Baris Data Pelanggan:
+  ├── Pisahkan Atribut (Nama, Telepon, Email, Total Belanja)
+  ├── Bersihkan Nama dari Berbagai Gelar (dr., H., S.Kom, dll)
+  ├── Standardisasi Format Telepon (+62 / 62 → 0)
+  └── Format Nominal Uang & Cetak Baris Tabel
+  ↓
+Cetak Total Keseluruhan Belanja
+  ↓
+  Selesai
 ```
 
 ---
 
 ## 🧠 Konsep Pemrograman yang Dilatih
 
-Latihan ini melatih alur dasar dalam membangun sebuah program:
-
-### 1. Input
-
-Menerima data dari pengguna melalui terminal.
-
+### 1. Parser Log & Penyamaran IP (Data Anonymization)
+Memecah baris log menggunakan delimiter `|` dan memodifikasi oktet IP terakhir untuk menjaga privasi.
 ```php
-$nama = readline("Nama: ");
+$oktet = explode(".", $ip);
+$oktet[3] = "***";
+$ip_aman = implode(".", $oktet);
 ```
 
-### 2. Validation
-
-Memastikan data yang diberikan sesuai dengan aturan.
-
+### 2. Analisis Kode Status & Durasi Maksimum
+Mendeteksi error HTTP (status 4xx/5xx) serta mencari request endpoint yang paling lambat diproses.
 ```php
-is_numeric($tugas)
+if (strpos($status, "5") === 0 || strpos($status, "4") === 0) $error++;
+if ($paling_lambat["durasi"] < (float)$durasi) {
+    $paling_lambat = ["endpoint" => $endpoint, "durasi" => (float)$durasi];
+}
 ```
 
-dan memastikan nilai berada pada rentang `0–100`.
-
-### 3. Storage
-
-Menyimpan data mahasiswa ke dalam associative/nested array.
-
+### 3. String Function untuk Analisis Teks
+Menggunakan fungsi built-in PHP untuk memeriksa keberadaan string, menghitung frekuensi, dan posisi awal.
 ```php
-$data_mahasiswa[$nama] = [
-    "tugas" => $tugas,
-    "uts" => $uts,
-    "uas" => $uas
-];
+str_contains($log_mentah, "/checkout");
+substr_count($log_mentah, "/produk");
+str_starts_with($log_mentah, "2026");
 ```
 
-### 4. Processing
-
-Mengolah data untuk mendapatkan nilai akhir.
-
-```text
-Tugas × 30%
-UTS   × 30%
-UAS   × 40%
+### 4. Membersihkan Gelar pada Nama Pelanggan
+Melakukan *looping* array gelar untuk menghapus atribut akademik atau kehormatan dari string nama secara bersih.
+```php
+foreach ($gelar as $g) {
+    $nama = trim(str_replace($g, "", $nama));
+}
 ```
 
-### 5. Decision
-
-Menentukan grade berdasarkan nilai akhir.
-
-```text
->= 85 → A
->= 70 → B
->= 60 → C
->= 50 → D
-<  50 → E
+### 5. Standardisasi Nomor Telepon Internasional
+Mengonversi awalan nomor telepon dari kode negara (`+62` atau `62`) menjadi format lokal (`0`).
+```php
+if (str_starts_with($telepon, "+62")) {
+    $telepon = "0" . substr($telepon, 3);
+} elseif (str_starts_with($telepon, "62")) {
+    $telepon = "0" . substr($telepon, 2);
+}
 ```
-
-### 6. Output
-
-Menampilkan hasil dalam bentuk tabel yang terformat.
-
-### 7. Persistence
-
-Menyimpan hasil rekapitulasi ke file `rekap_nilai.txt`.
 
 ---
 
 ## 📈 Tingkat Materi
 
-**Level: Beginner → Intermediate Awal**
+**Level: Intermediate**
 
 ```text
-PHP Fundamental
+String Manipulation & Delimiter
       ↓
-Variable & Data Type
+Sub-string & Position Extraction
       ↓
-Input & Validation
+Data Anonymization & Masking
       ↓
-Control Flow
+String Search & Validation Functions
       ↓
-Array
+CSV Cleaning & Normalization Pipeline
       ↓
-Function
-      ↓
-Data Processing
-      ↓
-File Handling
+Formatted CLI Reports
 ```
 
-Latihan ini sudah mencakup **fundamental PHP secara cukup lengkap** dan mulai memperkenalkan konsep pengolahan data dalam program yang lebih nyata.
+Latihan ini memperdalam pemahaman **pengolahan dan pembersihan data string (*string manipulation & cleaning*)** yang sangat krusial dalam pengembangan backend, pemrosesan log sistem (*log auditing*), dan normalisasi data dari input pengguna atau file eksternal.
